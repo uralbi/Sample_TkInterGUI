@@ -747,7 +747,7 @@ class Tracking:
     @staticmethod
     def evg_track(cont):
         if len(cont) == 11:
-            check_cont = '/html/body/div[5]/div[4]/table[1]/tbody/tr/td/form/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input'
+            check_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input[1]'
         else:
             cont = cont[4:]
 
@@ -756,17 +756,16 @@ class Tracking:
         dr.minimize_window()
         dr.get(web)
 
-        inp_con = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td[2]/input[1]'
+        inp_con = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[1]'
         WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, inp_con)))
         dr.find_element_by_xpath(inp_con).send_keys(cont)
-        sub_btn = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td[2]/input[2]'
+        sub_btn = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[2]'
         if len(cont) == 11:
-            check_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input'
             WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, check_cont)))
             dr.find_element_by_xpath(check_cont).click()
         dr.find_element_by_xpath(sub_btn).click()
         info = ''
-        time.sleep(1)
+        time.sleep(0.2)
 
         if len(cont) == 11:
             vess_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[1]/tbody/tr/td[3]'

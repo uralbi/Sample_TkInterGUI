@@ -493,7 +493,7 @@ class App(tk.Tk):
         lge_raw = filename
         output_file = f'{LGE_path}{lge_raw[:-5]}_track_p.xlsx'
         start_t = time.time()
-        df = pd.read_excel(f'{LGE_path}{lge_raw}', sheet_name='DATA', na_filter=False)
+        df = pd.read_excel(f'{LGE_path}{lge_raw}', sheet_name='data', na_filter=False)
         df.insert(loc=14, column='MBL_4', value=df['Master B/L No'].astype(str).str[0:4])
         df.insert(loc=15, column='MBL_KEY', value='')
         df["MBL_KEY"] = df['Current Vessel'] + '_' + df['POD Port'] + '_' + df['MBL_4']

@@ -104,6 +104,6 @@ lead_l = ['sbt', 'lot', 'fwt', 'soj', 'mch']
 branches = fns.branches
 print(branches)
 
-fns.staff_list(staff.branch_hou)
+fns.staff_list(staff.branch_chi)
 
 # fns.lead_to(['lot', 'fwt'])

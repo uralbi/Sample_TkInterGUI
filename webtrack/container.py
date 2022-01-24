@@ -220,7 +220,7 @@ def apl_track(cont):
 def mae_track(cont):
     pod = ('Los Angeles', 'Long Beach', 'Oakland', 'Savannah', 'Mobile', 'Houston', 'Wilmington', 'Prince Rupert',
            'Charleston', 'Norfolk', 'Miami', 'New Orleans', 'Jacksonville', 'Newark', 'Tampa', 'Vancouver',
-           'Baltimore')
+           'Baltimore','Seattle')
     dr = webdriver.Chrome()
     maersk = f'https://www.maersk.com/tracking/{cont}'
 
@@ -501,35 +501,38 @@ def med_track(cont):
 
 
 def evg_track(cont):
-    if len(cont) == 11:
-        check_cont = '/html/body/div[5]/div[4]/table[1]/tbody/tr/td/form/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input'
-    else:
-        cont = cont[4:]
-
     web = 'https://ct.shipmentlink.com/servlet/TDB1_CargoTracking.do'
     dr = webdriver.Chrome()
     dr.minimize_window()
     dr.get(web)
-
-    inp_con = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td[2]/input[1]'
-    WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, inp_con)))
-    dr.find_element_by_xpath(inp_con).send_keys(cont)
-    sub_btn = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td[2]/input[2]'
-    if len(cont) == 11:
-        check_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input'
-        WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, check_cont)))
-        dr.find_element_by_xpath(check_cont).click()
-    dr.find_element_by_xpath(sub_btn).click()
-    info = ''
-    time.sleep(1)
     ea = 'ETA'
     e_date = ''
     if len(cont) == 11:
-        date_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[2]/tbody/tr/td'
-        date = dr.find_element_by_xpath(date_path).text
+        check_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input[1]'
+        dr.find_element_by_xpath(check_cont).click()
+
+        inp_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[1]'
+        dr.find_element_by_xpath(inp_cont).send_keys(cont)
+
+        sub_btn = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[2]'
+        dr.find_element_by_xpath(sub_btn).click()
+
+        vessel_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[1]/tbody/tr/td[3]'
+        vessel = dr.find_element_by_xpath(vessel_path).text
+
+        eta_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[2]/tbody/tr/td'
+        date = dr.find_element_by_xpath(eta_path).text
         date = date.replace('\n', '').replace('Estimated Date of Arrival :', '')
         e_date = date
     else:
+        cont = cont[4:]
+
+        inp_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[1]'
+        dr.find_element_by_xpath(inp_cont).send_keys(cont)
+
+        sub_btn = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[2]'
+        dr.find_element_by_xpath(sub_btn).click()
+
         try:
             row_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[6]/tbody/tr[3]/'
             # WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, row_path)))
