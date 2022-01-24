@@ -39,11 +39,10 @@ def notes():
         path = os.path._getfullpathname(pdf_f)
         os.system(f"explorer {path}")
 
-init=' on (ONE), cs (Cosco: MBL/Cont), hp (Hapag),' \
-     '\n ma (Maersk), mt (Matson), ww (Westwood),' \
-     '\n sd (HamburgSud), sm (SM Line), wn (Wanhai)' \
-     '\n ap (CMA CGM), ec (ECUWorld)' \
-     '\n\n Required: Chrome Version 94.0.46'
+init=  ' ap (CMA CGM), on (ONE),     sd (HamburgSud), ' \
+     '\n ma (Maersk),  mt (Matson),  ww (Westwood),' \
+     '\n cs (Cosco),   sm (SM Line), wn (Wanhai)' \
+     '\n hp (Hapag),   ec (ECUWorld) eg (Evergreen)'
 
 text_out(init)
 
@@ -372,7 +371,7 @@ class Tracking:
     def mae_track(cont):
         pod = ('Los Angeles', 'Long Beach', 'Oakland', 'Savannah', 'Mobile', 'Houston', 'Wilmington', 'Prince Rupert',
                'Charleston', 'Norfolk', 'Miami', 'New Orleans', 'Jacksonville', 'Newark', 'Tampa', 'Vancouver',
-               'Baltimore')
+               'Baltimore', 'Seattle')
         dr = webdriver.Chrome()
         maersk = f'https://www.maersk.com/tracking/{cont}'
         dr.get(maersk)
