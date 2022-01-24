@@ -3,7 +3,7 @@ from FNS_data import staff, lead_email as ld
 
 class FnsMail:
     def __init__(self):
-        self.branches = ('LAO', 'LAGC','ATL', 'DFW', 'CHI','NYC', 'MIA', 'HOU')
+        self.branches = ('LAO', 'LAGC','ATL', 'DFW', 'CHI','NYC', 'MIA', 'HOU', 'SFO')
 
     def staff_list(self, branch):
         for i, list in branch.items():
@@ -104,4 +104,6 @@ lead_l = ['sbt', 'lot', 'fwt', 'soj', 'mch']
 branches = fns.branches
 print(branches)
 
-fns.staff_list(staff.branch_nyc)
+fns.staff_list(staff.branch_hou)
+
+# fns.lead_to(['lot', 'fwt'])
