@@ -182,45 +182,38 @@ def apl_track(cont):
     dr.get(apl)
     dr.find_element_by_id('Reference').send_keys(cont)
     dr.find_element_by_id('btnTracking').click()
-    time.sleep(1.5)
-    text = ''
+    text = eadate = pod = vessel = ''
+    ea = 'ETA'
+    base_path = '/html/body/div[2]/main/section[2]/div/div/div[2]/table/tbody/'
+    WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, f'{base_path}tr[1]')))
     try:
-        path = '/html/body/div[2]/div[2]/div[1]/div[1]/ul/li[3]/dl'
-        text = dr.find_element_by_xpath(path).text
+        i = 1
+        while True:
+            moves = dr.find_element_by_xpath(f'{base_path}tr[{i}]/td[2]').text
+            if moves == "DISCHARGED":
+                ea = 'ATA'
+                break
+            elif moves == "ARRIVAL FINAL PORT OF DISCHARGE":
+                break
+            i += 1
+        eadate = dr.find_element_by_xpath(f'{base_path}tr[{i}]/td[1]').text
+        # pod = dr.find_element_by_xpath(f'{base_path}tr[{i}]/td[3]').text
+        # vessel = dr.find_element_by_xpath(f'{base_path}tr[{i}]/td[4]').text
+        # podx = pod.find(',')
+        # if podx > 0:
+        #     pod = pod[:podx]
+        inx = eadate.find(',')
+        eadate = eadate[inx + 2:-5]
     except:
-        pass
-    if text == '':
-        text = dr.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[1]/ul/li[2]/dl').text
-    text = text.replace('\n', ' ')
-    table = dr.find_element_by_xpath('/html/body/div[2]/div[2]/div[2]/div[1]/div').text
-    st_01 = table.find('final port')
-    if st_01 < 0:
-        st_01 = table.find('Discharged')
-    table = table[(st_01 - 26):].replace('Arrival final port of discharge', '/ POD:')
-    text = text.replace('ETA at POD', 'POD ETA:')
+        eadate = '--'
     dr.quit()
-    eta_idx = text.find('POD ETA')
-    ata_idx = text.find('Arrived at POD')
-    if eta_idx == 0:
-        text = text[13:24]
-        eta = text.replace(' ', '-')
-        ea = 'ETA'
-        return ea, eta
-    elif ata_idx == 0:
-        text = text[19:30]
-        eta = text.replace(' ', '-')
-        ea = 'ATA'
-        return ea, eta
-    else:
-        eta = table[:11].replace(' ', '-')
-        ea = 'ATA?'
-        return ea, eta
+    return ea, eadate
 
 
 def mae_track(cont):
     pod = ('Los Angeles', 'Long Beach', 'Oakland', 'Savannah', 'Mobile', 'Houston', 'Wilmington', 'Prince Rupert',
            'Charleston', 'Norfolk', 'Miami', 'New Orleans', 'Jacksonville', 'Newark', 'Tampa', 'Vancouver',
-           'Baltimore','Seattle')
+           'Baltimore','Seattle', 'Charleston North')
     dr = webdriver.Chrome()
     maersk = f'https://www.maersk.com/tracking/{cont}'
 
