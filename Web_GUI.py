@@ -326,44 +326,31 @@ class Tracking:
         dr.get(apl)
         dr.find_element_by_id('Reference').send_keys(cont)
         dr.find_element_by_id('btnTracking').click()
-        time.sleep(1)
-        text = ''
+        text = eadate = pod = vessel = ''
+        ea = 'ETA'
+        base_path = '/html/body/div[2]/main/section[2]/div/div/div[2]/table/tbody/'
+        WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, f'{base_path}tr[1]')))
         try:
-            text = dr.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[1]/ul/li[3]/dl').text
-        except:
-            pass
-        if text == '':
-            try:
-                text = dr.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/div[1]/ul/li[2]/dl').text
-            except:
-                text ='No data, please check Container No or Carrier'
-        text = text.replace('\n', ' ')
-
-        i = 1
-        eta_t =''
-        while True:
-            try:
-                event = dr.find_element_by_xpath(f'/html/body/div[2]/div[2]/div[2]/div[1]/div/table/tbody/tr[{i}]/td[3]').text
-                if 'Arrival final' in event:
-                    eta_t = 'ETA'
+            i = 1
+            while True:
+                moves = dr.find_element_by_xpath(f'{base_path}tr[{i}]/td[2]').text
+                if moves == "DISCHARGED":
+                    ea = 'ATA'
                     break
-                elif 'Discharged' in event and 'transhipment' not in event:
-                    eta_t = 'ATA'
+                elif moves == "ARRIVAL FINAL PORT OF DISCHARGE":
                     break
                 i += 1
-            except:
-                break
-        if 'No data' in text:
-            pass
-        else:
-            date = dr.find_element_by_xpath(
-                f'/html/body/div[2]/div[2]/div[2]/div[1]/div/table/tbody/tr[{i}]/td[1]').text
-            date = date[3:-5].strip().replace(' ', '-')
-            pod = dr.find_element_by_xpath(f'/html/body/div[2]/div[2]/div[2]/div[1]/div/table/tbody/tr[{i}]/td[4]').text
-            vessel = dr.find_element_by_xpath(
-                f'/html/body/div[2]/div[2]/div[2]/div[1]/div/table/tbody/tr[{i}]/td[5]').text
-            pod = pod.replace('\n', '').replace('Accessible text', '')
-            text = f' {eta_t}: {date} \n POD: {pod} \n Vessel: {vessel}'
+            eadate = dr.find_element_by_xpath(f'{base_path}tr[{i}]/td[1]').text
+            pod = dr.find_element_by_xpath(f'{base_path}tr[{i}]/td[3]').text
+            vessel = dr.find_element_by_xpath(f'{base_path}tr[{i}]/td[4]').text
+            podx = pod.find(',')
+            if podx > 0:
+                pod = pod[:podx]
+            inx = eadate.find(',')
+            eadate = eadate[inx + 2:-5]
+            text = f' {ea} : {eadate} \n {pod} : {vessel}'
+        except:
+            text = 'No results found'
         dr.quit()
         text_out(text)
 
@@ -371,7 +358,7 @@ class Tracking:
     def mae_track(cont):
         pod = ('Los Angeles', 'Long Beach', 'Oakland', 'Savannah', 'Mobile', 'Houston', 'Wilmington', 'Prince Rupert',
                'Charleston', 'Norfolk', 'Miami', 'New Orleans', 'Jacksonville', 'Newark', 'Tampa', 'Vancouver',
-               'Baltimore', 'Seattle')
+               'Baltimore', 'Seattle', 'Charleston North')
         dr = webdriver.Chrome()
         maersk = f'https://www.maersk.com/tracking/{cont}'
         dr.get(maersk)
@@ -669,12 +656,6 @@ class Tracking:
         WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, us_btn)))
         dr.find_element_by_xpath(us_btn).click()
 
-        # try:
-        #     sub_btn = '/html/body/form/div[8]/div/a[2]'
-        #     WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, sub_btn)))
-        #     dr.find_element_by_xpath(sub_btn).click()
-        # except:
-        #     pass
         cnt_inp = '/html/body/form/div[4]/div/div[3]/main/div/div[1]/div/div/div[1]/div/div/div/div[2]/div/div[2]/input'
         WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, cnt_inp)))
         dr.find_element_by_xpath(cnt_inp).send_keys(cont)
@@ -683,7 +664,7 @@ class Tracking:
 
         row_tb = '/html/body/form/div[4]/div/div[3]/main/div/div[2]/div/div/div[2]/dl/dd/div/dl/dd/div/table[2]/tbody'
         WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, row_tb)))
-        # location /td[1]  :Desc /td[2]  date: /td[3]   Vessel: /td[4]
+
         i = 1
         while True:
             try:

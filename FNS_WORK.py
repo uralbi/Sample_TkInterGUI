@@ -12,7 +12,7 @@ from dateutil.utils import today
 from webtrack.container import one_track, cosco_mbl_track, sm_track, hap_track, sud_track, apl_track, ww_track, \
     mae_track, mat_track, wan_track, evg_track
 from FNS_data.static import apl_key, ww_key, mae_cont, one_conts, tracks, wan_cont, wan_key, non_tracks
-from msc_fncs.fncs import min_sec, joke_str, todo, current_date
+from msc_fncs.fncs import min_sec, todo, current_date
 
 
 class App(tk.Tk):
@@ -147,8 +147,6 @@ class App(tk.Tk):
                                font="Black 8", bg='#595959', fg="#999999", height=2, border=0
                                ).place(relx=0.75, rely=0.02, relheight=0.1)
         folder_text.set("Emails")
-
-        self.label_func(joke_str(8))
 
     def open_f_codes(self):
         pdf_f = 'msc_fncs/f_codes.txt'
@@ -761,9 +759,9 @@ class App(tk.Tk):
             # self.label_func(f'file {i}: {df_len}')
             df = df.append(df_2)
             i += 1
-        end = time.time()
         tt = df.shape[0]
         df.to_excel(output_path, sheet_name='Data', index=None)
+        end = time.time()
         exec_time = end - start
         self.label_func(f'File saved. Total {tt} \nTime consumed: {min_sec(exec_time)}')
 
