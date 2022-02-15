@@ -227,8 +227,8 @@ def mae_track(cont):
     info1 = ''
     e_ata, eta = '-', '-'
     try:
-        WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'button__text')))
-        dr.find_element_by_class_name('button__text').click()
+        # WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'button__text')))
+        # dr.find_element_by_class_name('button__text').click()
         path_info = '/html/body/main/div/div/div[3]/div/div[1]/div[1]'
         WebDriverWait(dr, 10).until(EC.presence_of_element_located((By.XPATH, path_info)))
         for i in range(1, 14):

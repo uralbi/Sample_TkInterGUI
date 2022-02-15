@@ -371,8 +371,8 @@ class Tracking:
             pass
         info1 = ''
         try:
-            WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'button__text')))
-            dr.find_element_by_class_name('button__text').click()
+            # WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'button__text')))
+            # dr.find_element_by_class_name('button__text').click()
             path_info = '/html/body/main/div/div/div[3]/div/div[1]/div[1]'
             WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, path_info)))
             div_num = 0
