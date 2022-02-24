@@ -456,41 +456,49 @@ def wan_track(cont):
 def med_track(cont):
     web = 'https://www.msc.com/track-a-shipment'
     dr = webdriver.Chrome()
+    # dr.minimize_window()
     dr.get(web)
-
     us_btn = '/html/body/div[1]/div/a[1]'
     WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, us_btn)))
     dr.find_element_by_xpath(us_btn).click()
 
-    # try:
-    #     sub_btn = '/html/body/form/div[8]/div/a[2]'
-    #     WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, sub_btn)))
-    #     dr.find_element_by_xpath(sub_btn).click()
-    # except:
-    #     pass
     cnt_inp = '/html/body/form/div[4]/div/div[3]/main/div/div[1]/div/div/div[1]/div/div/div/div[2]/div/div[2]/input'
     WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, cnt_inp)))
     dr.find_element_by_xpath(cnt_inp).send_keys(cont)
     search_btn = '/html/body/form/div[4]/div/div[3]/main/div/div[1]/div/div/div[1]/div/div/div/div[3]/a'
     dr.find_element_by_xpath(search_btn).click()
 
-    row_tb = '/html/body/form/div[4]/div/div[3]/main/div/div[2]/div/div/div[2]/dl/dd/div/dl/dd/div/table[2]/tbody/tr[1]'
+    row_tb = '/html/body/form/div[4]/div/div[3]/main/div/div[2]/div/div/div[2]/dl/dd/div/dl/dd/div/table[2]/tbody'
     WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, row_tb)))
-    # location /td[1]  :Desc /td[2]  date: /td[3]   Vessel: /td[4]
+    ea = 'ETA'
     i = 1
     while True:
-        descr = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[2]').text
-        if 'Estimated' in descr:
-            break
-        elif 'Discharged' in descr:
-            break
-        elif i == 5:
+        try:
+            descr = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[2]').text
+            if 'Estimated' in descr:
+                break
+            elif 'Discharged' in descr:
+                break
+            elif i == 5:
+                break
+        except:
+            descr = 'No data'
+            dr.quit()
             break
         i += 1
-    eta_d = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[3]').text
-    ea = 'ETA' if 'Estimated' in descr else 'ATA'
-    info_date = eta_d
-    return ea, info_date
+    if "No data" not in descr:
+        # pod = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[1]').text
+        eta_d = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[3]').text
+        # vessel = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[4]').text
+        ea = 'ETA' if 'Estimated' in descr else 'ATA'
+        # info = f'{pod} {ea} {eta_d} \nVessel: {vessel}'
+    else:
+        eta_d = '--'
+        # info = descr
+    dr.quit()
+    eta = eta_d.split('/')
+    eta = eta[1] +'/'+ eta[0] +'/'+ eta[2]
+    return ea, eta
 
 
 def evg_track(cont):

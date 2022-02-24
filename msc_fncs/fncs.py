@@ -18,15 +18,36 @@ def todo():
     todo_list = ''
     weekdays = ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
     td = datetime.date.today()
+
     td_d = td.day
     td_m = td.month
     td_y = td.year
     td_wd = td.weekday()
+
+    n_year = td_y if td_m < 12 else (td_y + 1)
+    n_month = td_m + 1 if td_m < 12 else 1
+
+    mon1 = datetime.date(td.year, td_m, 1)
+    mon2 = datetime.date(n_year, n_month, 1)
+
+    t_days = (mon2 - mon1).days
+    last_wd = datetime.date(td.year, td_m, t_days).weekday()
+
+    if last_wd == 2:
+        mbl_w2 = datetime.date(td.year, td_m, t_days)
+        mbl_w1 = datetime.date(td.year, td_m, t_days - 7)
+    elif last_wd < 2:
+        mbl_w2 = datetime.date(td.year, td_m, t_days - (7 - last_wd - 2))
+        mbl_w1 = datetime.date(td.year, td_m, t_days - (14 - last_wd - 2))
+    elif last_wd > 2:
+        mbl_w2 = datetime.date(td.year, td_m, t_days - (last_wd - 2))
+        mbl_w1 = datetime.date(td.year, td_m, t_days - (last_wd - 2) - 7)
+
     if td_wd == 0:
         todo_list = 'KAM'
     elif td_wd == 1:
         todo_list = 'LEAD, PIERPASS'
-    elif td_wd == 2 and td_d > 17 and td_m != 2:
+    elif td == mbl_w2 or td == mbl_w1:
         todo_list = 'MBL'
     todo_list += f'  {weekdays[td_wd]} : {td_d} {td_m} {td_y}'
     return todo_list

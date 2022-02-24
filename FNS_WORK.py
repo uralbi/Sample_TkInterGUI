@@ -10,8 +10,8 @@ import tkinter as tk
 from tkinter import *
 from dateutil.utils import today
 from webtrack.container import one_track, cosco_mbl_track, sm_track, hap_track, sud_track, apl_track, ww_track, \
-    mae_track, mat_track, wan_track, evg_track
-from FNS_data.static import apl_key, ww_key, mae_cont, one_conts, tracks, wan_cont, wan_key, non_tracks
+    mae_track, mat_track, wan_track, evg_track, med_track
+from FNS_data.static import apl_key, ww_key, mae_cont, one_conts, tracks, wan_cont, wan_key, non_tracks, med_cont
 from msc_fncs.fncs import min_sec, todo, current_date
 
 
@@ -505,8 +505,9 @@ class App(tk.Tk):
         df = df.drop_duplicates(subset=['S_KEY'])
         total = len(df['Master B/L No'])
         print('Total: ', total, 'Est.time:', min_sec(total*9))
-        self.label_func(f'Total: {total} Est.time: {min_sec(total*9)}')
+
         eta_list = self.list_m(df)
+
         df['New ETA'] = eta_list[0]
         df['ETA/ATA'] = eta_list[1]
         df.to_excel(output_file, sheet_name='Contents', index=None)
@@ -586,6 +587,14 @@ class App(tk.Tk):
             elif key == 'HLCU':
                 try:
                     eta_info = hap_track(cont)
+                    eta = eta_info[1]
+                    ea = eta_info[0]
+                except:
+                    eta = '--'
+                    ea = '--'
+            elif key in med_cont:
+                try:
+                    eta_info = med_track(cont)
                     eta = eta_info[1]
                     ea = eta_info[0]
                 except:

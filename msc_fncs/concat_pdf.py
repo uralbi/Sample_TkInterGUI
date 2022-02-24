@@ -2,7 +2,7 @@ import os
 from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 import PyPDF2
 
-invoice_date = '02012022'
+invoice_date = '02152022'
 folder = f'C:/Users/URAL KOZHOKMATOV/Documents/FNS/1 PIERPASS/{invoice_date}/Orig/'
 
 def concat_pdf(folder):
@@ -19,6 +19,10 @@ def concat_pdf(folder):
 
 
 def delete_pages_pdf(nums):
+    """
+    :param nums: iterable
+    :return: none, saved file
+    """
     folder = f'C:/Users/URAL KOZHOKMATOV/Documents/FNS/PDF/'
     path = os.path._getfullpathname(folder)
     f_name = 'Invoice.pdf'
@@ -34,3 +38,40 @@ def delete_pages_pdf(nums):
     output_file = f'{path}{f_name[:-4]}_del_pages.pdf'
     with open(output_file, "wb") as out:
         pdf_wr.write(out)
+
+
+def extract_pdf(nums):
+    """
+    :param nums: iterable numbers
+    :return: none saved file
+    """
+    folder = f'C:/Users/URAL KOZHOKMATOV/Documents/FNS/PDF/'
+    path = os.path._getfullpathname(folder)
+    f_name = 'FNS.pdf'
+    pdf_f = rf'{path}{f_name}'
+    # file_read = open(pdf_f, 'rb')
+    pdf_rd = PdfFileReader(pdf_f)
+    pdf_wr = PdfFileWriter()
+    get_pages = [n-1 for n in nums]
+    pages = pdf_rd.numPages
+    for n in range(pages):
+        if n in get_pages:
+            pdf_wr.addPage(pdf_rd.getPage(n))
+    output_file = f'{path}{f_name[:-4]}_get_pages.pdf'
+    with open(output_file, "wb") as out:
+        pdf_wr.write(out)
+
+
+def info_pdf():
+    folder = f'C:/Users/URAL KOZHOKMATOV/Documents/FNS/PDF/'
+    path = os.path._getfullpathname(folder)
+    f_name = 'FNS.pdf'
+    pdf_f = rf'{path}{f_name}'
+    # file_read = open(pdf_f, 'rb')
+    pdf_rd = PdfFileReader(pdf_f)
+    t_pages = pdf_rd.getNumPages()
+    l_pdf = pdf_rd.getPageLayout
+    print(t_pages)
+
+
+concat_pdf(folder)
