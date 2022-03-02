@@ -49,7 +49,7 @@ def todo():
         todo_list = 'LEAD, PIERPASS'
     elif td == mbl_w2 or td == mbl_w1:
         todo_list = 'MBL'
-    todo_list += f'  {weekdays[td_wd]} : {td_d} {td_m} {td_y}'
+    todo_list += f'  {weekdays[td_wd]} : {td_d}-{td_m}-{td_y}'
     return todo_list
 
 def delay_mail(month, date, hour, min, function, message):

@@ -2,7 +2,7 @@ import os
 from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 import PyPDF2
 
-invoice_date = '02152022'
+invoice_date = '02222022'
 folder = f'C:/Users/URAL KOZHOKMATOV/Documents/FNS/1 PIERPASS/{invoice_date}/Orig/'
 
 def concat_pdf(folder):

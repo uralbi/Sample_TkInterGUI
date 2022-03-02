@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from FNS_data.static import apl_key, ww_key, mae_cont, one_conts, tracks, wan_cont, wan_key, non_tracks
-
+from webtrack.Vetracker import vetrack
 
 window = tk.Tk()
 window.configure(background="#e6e6e6")
@@ -54,11 +54,7 @@ class Tracking:
         if timer < exp_d:
             cont = container.get().strip()
             carrier = carr.get().strip().lower()
-            if len(cont) < 11:
-                info ='Please enter valid Container No'
-                # messagebox.showinfo('message', info)
-                text_out(info)
-            elif carrier == 'sm':
+            if carrier == 'sm':
                 self.sm_track(cont)
             elif carrier == 'on':
                 self.one_track(cont)
@@ -84,6 +80,8 @@ class Tracking:
                 self.ecu_track(cont)
             elif carrier == 'eg':
                 self.evg_track(cont)
+            elif carrier == 'ves':
+                text_out(vetrack(cont))
             else:
                 info = 'Please enter valid values'
                 text_out(info)
