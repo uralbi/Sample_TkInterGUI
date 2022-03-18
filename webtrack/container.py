@@ -491,13 +491,11 @@ def med_track(cont):
         eta_d = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[3]').text
         # vessel = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[4]').text
         ea = 'ETA' if 'Estimated' in descr else 'ATA'
-        # info = f'{pod} {ea} {eta_d} \nVessel: {vessel}'
+        eta = eta_d.split('/')
+        eta = eta[1] + '/' + eta[0] + '/' + eta[2]
     else:
-        eta_d = '--'
-        # info = descr
+        eta = '--'
     dr.quit()
-    eta = eta_d.split('/')
-    eta = eta[1] +'/'+ eta[0] +'/'+ eta[2]
     return ea, eta
 
 

@@ -44,7 +44,7 @@ def todo():
         mbl_w1 = datetime.date(td.year, td_m, t_days - (last_wd - 2) - 7)
 
     if td_wd == 0:
-        todo_list = 'KAM'
+        todo_list = ''
     elif td_wd == 1:
         todo_list = 'LEAD, PIERPASS'
     elif td == mbl_w2 or td == mbl_w1:

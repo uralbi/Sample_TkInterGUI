@@ -382,6 +382,7 @@ class App(tk.Tk):
         raw_file = filename
         edited_file = f'{filename[:-5]} - Edited_p.xlsx'
         start_t = time.time()
+        print(filename,path)
         df = pd.read_excel(f'{LGE_path}{raw_file}', na_filter=False)
         fdest_ports = ('USFW7', 'USLOT', 'USMCH', 'USSBT', 'USSOJ', 'USXF7')
         route_e = ('AWT', 'MLB')
@@ -489,21 +490,37 @@ class App(tk.Tk):
     def eta_tracking(self,filename, path):
         LGE_path = path
         lge_raw = filename
-        output_file = f'{LGE_path}{lge_raw[:-5]}_track_p.xlsx'
+        output_file = f'{LGE_path}{lge_raw[9:-5]}_track_p.xlsx'
         start_t = time.time()
+
+        # df = pd.read_excel(f'{LGE_path}{lge_raw}', sheet_name='data', na_filter=False)
+        # df.insert(loc=14, column='MBL_4', value=df['Master B/L No'].astype(str).str[0:4])
+        # df.insert(loc=15, column='MBL_KEY', value='')
+        # df["MBL_KEY"] = df['Current Vessel'] + '_' + df['POD Port'] + '_' + df['MBL_4']
+        # df["S_KEY"] = df['Current Vessel'] + df['POD Port']
+        # df['New ETA'] = ''
+        # df['ETA/ATA'] = ''
+        # df = df[['Current Vessel', 'Carrier', 'Master B/L No', 'Container No', 'MBL_KEY', 'POD Port', 'S_KEY', 'MBL_4',
+        #          'POD ETA', 'ETA/ATA', 'New ETA']]
+        # df = df[df['MBL_4'].isin(non_tracks) == False]
+        # df = df.drop_duplicates(subset=['MBL_KEY'])
+        # df = df.drop_duplicates(subset=['S_KEY'])
+        # total = len(df['Master B/L No'])
+
         df = pd.read_excel(f'{LGE_path}{lge_raw}', sheet_name='data', na_filter=False)
-        df.insert(loc=14, column='MBL_4', value=df['Master B/L No'].astype(str).str[0:4])
+        df.insert(loc=14, column='MBL_4', value=df['MBL No'].astype(str).str[0:4])
         df.insert(loc=15, column='MBL_KEY', value='')
-        df["MBL_KEY"] = df['Current Vessel'] + '_' + df['POD Port'] + '_' + df['MBL_4']
-        df["S_KEY"] = df['Current Vessel'] + df['POD Port']
+        df["MBL_KEY"] = df['Current Vessel'] + '_' + df['POD'] + '_' + df['MBL_4']
+        df["S_KEY"] = df['Current Vessel'] + df['POD']
         df['New ETA'] = ''
         df['ETA/ATA'] = ''
-        df = df[['Current Vessel', 'Carrier', 'Master B/L No', 'Container No', 'MBL_KEY', 'POD Port', 'S_KEY', 'MBL_4',
+        df = df[['Current Vessel', 'Carrier\nGrp', 'MBL No', 'CNTR No', 'MBL_KEY', 'POD', 'S_KEY', 'MBL_4',
                  'POD ETA', 'ETA/ATA', 'New ETA']]
         df = df[df['MBL_4'].isin(non_tracks) == False]
         df = df.drop_duplicates(subset=['MBL_KEY'])
         df = df.drop_duplicates(subset=['S_KEY'])
-        total = len(df['Master B/L No'])
+        total = len(df['MBL No'])
+
         print('Total: ', total, 'Est.time:', min_sec(total*9))
 
         eta_list = self.list_m(df)
@@ -518,7 +535,7 @@ class App(tk.Tk):
         my_l = []
         my_l_2 = []
         total_data = df.shape[0]
-        for cont, key in zip(df['Container No'], df['MBL_4']):
+        for cont, key in zip(df['CNTR No'], df['MBL_4']):
             ea, eta = '-', '-'
             if key == 'ONEY':
                 try:
@@ -584,14 +601,14 @@ class App(tk.Tk):
                 except:
                     eta = '--'
                     ea = '--'
-            elif key == 'HLCU':
-                try:
-                    eta_info = hap_track(cont)
-                    eta = eta_info[1]
-                    ea = eta_info[0]
-                except:
-                    eta = '--'
-                    ea = '--'
+            # elif key == 'HLCU':
+            #     try:
+            #         eta_info = hap_track(cont)
+            #         eta = eta_info[1]
+            #         ea = eta_info[0]
+            #     except:
+            #         eta = '--'
+            #         ea = '--'
             elif key in med_cont:
                 try:
                     eta_info = med_track(cont)
