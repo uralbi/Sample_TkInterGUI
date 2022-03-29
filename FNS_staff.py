@@ -101,9 +101,9 @@ lead_l = ['sbt', 'lot', 'fwt', 'soj', 'mch']
 # fns.mailto_brn(staff.branch_atl)
 # fns.staff_list(staff.branch_nyc)
 
-branches = fns.branches
-print(branches)
+print(fns.branches)
 
-fns.staff_list(staff.branch_chi)
+fns.staff_list(staff.branch_mia)
+# fns.mailto_brn(staff.branch_mia)
 
-# fns.lead_to(['lot', 'fwt'])
+# fns.lead_to(['soj'])

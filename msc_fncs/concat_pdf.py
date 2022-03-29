@@ -2,7 +2,7 @@ import os
 from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 import PyPDF2
 
-invoice_date = '03012022'
+invoice_date = '03222022'
 folder = f'C:/Users/URAL KOZHOKMATOV/Documents/FNS/1 PIERPASS/{invoice_date}/Orig/'
 
 def concat_pdf(folder):
@@ -17,6 +17,7 @@ def concat_pdf(folder):
 
     merger.write(rf"{path}Conf_Letters.pdf")
 
+concat_pdf(folder)
 
 def delete_pages_pdf(file, nums):
     """
@@ -35,7 +36,6 @@ def delete_pages_pdf(file, nums):
     output_file = f'{file[:-4]}_del_pages.pdf'
     with open(output_file, "wb") as out:
         pdf_wr.write(out)
-
 
 def extract_pdf(nums):
     """
@@ -58,7 +58,6 @@ def extract_pdf(nums):
     with open(output_file, "wb") as out:
         pdf_wr.write(out)
 
-
 def info_pdf():
     folder = f'C:/Users/URAL KOZHOKMATOV/Documents/FNS/PDF/'
     path = os.path._getfullpathname(folder)
@@ -73,4 +72,4 @@ def info_pdf():
 
 file = 'C:/Users/URAL KOZHOKMATOV/Downloads/UR-Downlight 2021.pdf'
 
-delete_pages_pdf(file,(1,2,3))
+# delete_pages_pdf(file,(1,2,3))

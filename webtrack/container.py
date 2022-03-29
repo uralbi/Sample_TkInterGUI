@@ -500,54 +500,49 @@ def med_track(cont):
 
 
 def evg_track(cont):
+    if len(cont) == 11:
+        check_cont = '/html/body/div[4]/center/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input[1]'
+    else:
+        cont = cont[4:]
+    ea, e_date = 'ETA', ''
     web = 'https://ct.shipmentlink.com/servlet/TDB1_CargoTracking.do'
     dr = webdriver.Chrome()
     dr.minimize_window()
     dr.get(web)
-    ea = 'ETA'
-    e_date = ''
+
+    inp_con = '/html/body/div[4]/center/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[1]'
+    WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, inp_con)))
+    dr.find_element_by_xpath(inp_con).send_keys(cont)
+    sub_btn = '/html/body/div[4]/center/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[2]'
     if len(cont) == 11:
-        check_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input[1]'
+        WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, check_cont)))
         dr.find_element_by_xpath(check_cont).click()
-
-        inp_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[1]'
-        dr.find_element_by_xpath(inp_cont).send_keys(cont)
-
-        sub_btn = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[2]'
-        dr.find_element_by_xpath(sub_btn).click()
-
-        vessel_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[1]/tbody/tr/td[3]'
-        vessel = dr.find_element_by_xpath(vessel_path).text
-
-        eta_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[2]/tbody/tr/td'
-        date = dr.find_element_by_xpath(eta_path).text
-        date = date.replace('\n', '').replace('Estimated Date of Arrival :', '')
-        e_date = date
-    else:
-        cont = cont[4:]
-
-        inp_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[1]'
-        dr.find_element_by_xpath(inp_cont).send_keys(cont)
-
-        sub_btn = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[2]'
-        dr.find_element_by_xpath(sub_btn).click()
-
+    dr.find_element_by_xpath(sub_btn).click()
+    info = ''
+    time.sleep(0.2)
+    if len(cont) == 11:
+        vess_path = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[1]/tbody/tr/td[3]'
         try:
-            row_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[6]/tbody/tr[3]/'
-            # WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, row_path)))
-            eta = dr.find_element_by_xpath(f'{row_path}td[1]').text
-            e_date = eta
+            vessel = dr.find_element_by_xpath(vess_path).text
+            v_idx = vessel.find('-')
+            vessel = vessel[:v_idx]
+            date_path = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[2]/tbody/tr/td'
+            date = dr.find_element_by_xpath(date_path).text
+            e_date = date.replace('\n', '').replace('Estimated Date of Arrival :', '')
+            dr.quit()
         except:
-            rows = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[3]/tbody/'
-            i = 3
-            while True:
-                status = dr.find_element_by_xpath(f'{rows}tr[{i}]/td[8]').text
-                if 'Discharged' in status:
-                    break
-                elif i == 11:
-                    break
-                i += 1
-            date = dr.find_element_by_xpath(f'{rows}tr[{i}]/td[9]').text
-            ea = 'ATA'
-            e_date = date
+            info = 'No Data'
+            dr.quit()
+    else:
+        try:
+            table = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[6]/tbody'
+            t_info = dr.find_element_by_xpath(table).text.split('\n')[-1].split(' ')
+            info1 = [i.strip() for i in t_info if len(i) > 2]
+            e_date = info1[0]
+            dr.quit()
+        except:
+            cont_link = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[3]/tbody/tr[3]/td[1]/a'
+            dr.find_element_by_xpath(cont_link).click()
+            dr.switch_to.window(dr.window_handles[1])
+    dr.quit()
     return ea, e_date

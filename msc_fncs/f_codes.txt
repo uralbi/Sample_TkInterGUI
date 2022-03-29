@@ -1,0 +1,41 @@
+NOTES:
+
+add : yuna.jung@fnsusa.com
+
+N1A
+NF2
+N1D
+N1F
+NTX
+
+
+
+
+PLISH4C60889 SMLMSHSR1D532700 CAIU6669335
+System에 SM NINGBO로 되어 있는데 실제로 Vessel은 SM BUSAN이고 POD ATA: 2021-12-09로 나왔습니다.
+오늘 POD ETA/ATA를 수정했습니다.
+
+
+'E364': 'NEW YORK GCT BAYONNE TERMINAL',
+'Z952': 'Long Beach Total Terminals International',
+'WAC8': 'Long Beach Container Terminal (Pier E)',
+'W185': 'APM TERMINALS (PIER 400) / LA HARBOR APM TERMINAL / 2500 Navy Way',
+'Y790': 'LOS ANGELES YUSEN TERMINALS LLC',
+'Y773': 'LOS ANGELES WEST BASIN CONTAINER TERMINAL',
+'V136': 'Houston Bay Port Container Termina',
+'N598': 'CHARLESTON WANDO WELCH TERMINAL',
+'L391': 'North Charlston Terminal (CERES MARINE TERMINAL) NCT',
+'N195': 'VIG (VIRGINIA INTL GATEWAY)',
+'L005': 'NIT (NORFOLK INTL TERMINAL)',
+'S787': 'BARBOURS CUT CONTAINER TERMINAL (PORT)',
+'Z705': 'WASHINGTON UNITED TERMINALS INC',
+'J830': 'GCT DELTAPORT',
+'X005': 'PORT OF PORTLAND TERMINAL 6',
+'W182': 'Long Beach - Pacific Container Terminal',
+'Y309': 'ITS (INTL TRANSPORTATION SERVICES)',
+'Y257': 'Fenix Marine Terminal',
+'L737': 'Garden City Terminal',
+'M669': 'Port of Tampa',
+'R103': 'APM TERMINALS MOBILE ALABAMA',
+'Z985': 'SSA BERTH 58 1717 Middle Oakland',
+

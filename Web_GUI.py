@@ -7,7 +7,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from FNS_data.static import apl_key, ww_key, mae_cont, one_conts, tracks, wan_cont, wan_key, non_tracks
 from webtrack.Vetracker import vetrack
 
 window = tk.Tk()
@@ -726,19 +725,18 @@ class Tracking:
     @staticmethod
     def evg_track(cont):
         if len(cont) == 11:
-            check_cont = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input[1]'
+            check_cont = '/html/body/div[4]/center/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/input[1]'
         else:
             cont = cont[4:]
 
         web = 'https://ct.shipmentlink.com/servlet/TDB1_CargoTracking.do'
         dr = webdriver.Chrome()
-        dr.minimize_window()
         dr.get(web)
-
-        inp_con = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[1]'
+        dr.minimize_window()
+        inp_con = '/html/body/div[4]/center/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[1]'
         WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, inp_con)))
         dr.find_element_by_xpath(inp_con).send_keys(cont)
-        sub_btn = '/html/body/div[4]/div[4]/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[2]'
+        sub_btn = '/html/body/div[4]/center/table[2]/tbody/tr/td/form/span[2]/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/input[2]'
         if len(cont) == 11:
             WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, check_cont)))
             dr.find_element_by_xpath(check_cont).click()
@@ -747,41 +745,35 @@ class Tracking:
         time.sleep(0.2)
 
         if len(cont) == 11:
-            vess_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[1]/tbody/tr/td[3]'
-            vessel = dr.find_element_by_xpath(vess_path).text
-            v_idx = vessel.find('-')
-            vessel = vessel[:v_idx]
-            date_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[2]/tbody/tr/td'
-            date = dr.find_element_by_xpath(date_path).text
-            date = date.replace('\n', '').replace('Estimated Date of Arrival :', '')
-            info = f'ETA: {date}\nVESSEL: {vessel}'
+            vess_path = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[1]/tbody/tr/td[3]'
+            try:
+                vessel = dr.find_element_by_xpath(vess_path).text
+                v_idx = vessel.find('-')
+                vessel = vessel[:v_idx]
+                date_path = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[2]/tbody/tr/td'
+                date = dr.find_element_by_xpath(date_path).text
+                date = date.replace('\n', '').replace('Estimated Date of Arrival :', '')
+                info = f'ETA: {date}\nVESSEL: {vessel}'
+                dr.quit()
+            except:
+                info = 'No Data'
+                dr.quit()
         else:
             try:
-                row_path = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[6]/tbody/tr[3]/'
-                # WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, row_path)))
-                eta = dr.find_element_by_xpath(f'{row_path}td[1]').text
-                pod = dr.find_element_by_xpath(f'{row_path}td[2]').text
-                vessel = dr.find_element_by_xpath(f'{row_path}td[3]').text
-                pod_idx = pod.find(',')
-                pod = pod[:pod_idx].strip()
-                info = f'{pod} ETA: {eta} \nVessel: {vessel}'
+                table = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[6]/tbody'
+                t_info = dr.find_element_by_xpath(table).text.split('\n')[-1]
+                t_info1 = t_info.split(' ')
+                info1 = [i.strip() for i in t_info1 if len(i) > 2]
+                inx1 = t_info.find(')')
+                inx2 = t_info[::-1].find(' ')
+                vess = t_info[inx1+1:-inx2].strip()
+                eta, pod = info1[0], info1[1].replace(',', '')
+                dr.quit()
+                info = f'{pod} ETA: {eta} \nVessel: {vess}'
             except:
-                rows = '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[3]/tbody/'
-                # WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH,
-                #                 '/html/body/div[5]/div[4]/table[2]/tbody/tr/td/table[3]/tbody/')))
-                i = 3
-                while True:
-                    status = dr.find_element_by_xpath(f'{rows}tr[{i}]/td[8]').text
-                    if 'Discharged' in status:
-                        break
-                    elif i == 11:
-                        break
-                    i += 1
-                indx = status.find(',')
-                status = status[:indx].replace('(FCL)', '').replace("  ", ' ')
-                date = dr.find_element_by_xpath(f'{rows}tr[{i}]/td[9]').text
-                info = f'ATA: {date}\n{status}'
-        dr.quit()
+                cont_link = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[3]/tbody/tr[3]/td[1]/a'
+                dr.find_element_by_xpath(cont_link).click()
+                dr.switch_to.window(dr.window_handles[1])
         text_out(info)
 
 button = tk.Button(

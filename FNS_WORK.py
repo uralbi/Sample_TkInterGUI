@@ -13,6 +13,10 @@ from webtrack.container import one_track, cosco_mbl_track, sm_track, hap_track, 
     mae_track, mat_track, wan_track, evg_track, med_track
 from FNS_data.static import apl_key, ww_key, mae_cont, one_conts, tracks, wan_cont, wan_key, non_tracks, med_cont
 from msc_fncs.fncs import min_sec, todo, current_date
+from exfilters.newlge import newlge_flt
+from exfilters.imdl_n1d import n1d_imdl
+from exfilters.imdl_ntx import ntx_imdl
+from exfilters.lead_time import lead_time
 
 
 class App(tk.Tk):
@@ -55,8 +59,8 @@ class App(tk.Tk):
         rel_x = 0.35
 
         # Choose Filter
-        self.OPTIONS = ['Choose filter:', 'LGE Raw', "Non LGE Raw", "FRT Raw", 'FTV Error',
-                   'Fdest NotIN-All', 'LEAD TIME Raw', 'ETA_WEB_TRACK', 'MERGE']  # etc
+        self.OPTIONS = ['Choose a filter:', 'LGE Raw', "FRT Raw", 'FTV Error',
+                   'Fdest NotIN-All', 'LEAD TIME Raw', 'ETA_WEB_TRACK', 'MERGE', 'N1D_Raw', 'NTX_Raw']  # etc
 
         self.variable = StringVar()
         self.variable.set(self.OPTIONS[0])  # default value
@@ -89,10 +93,10 @@ class App(tk.Tk):
         folder_text.set("LGE")
 
         folder_text = tk.StringVar()
-        folder_btn = tk.Button(self, textvariable=folder_text, command=self.open_nlge_f,
+        folder_btn = tk.Button(self, textvariable=folder_text, command=self.open_pier,
                                font="Black 8", bg=b_color, fg="Black", height=2, border=brd
                                ).place(relx=0.12, rely=vert_coor, relwidth=width_, relheight=0.1)
-        folder_text.set("NLGE")
+        folder_text.set("PIER")
 
         folder_text = tk.StringVar()
         folder_btn = tk.Button(self, textvariable=folder_text, command=self.open_frt_f,
@@ -204,7 +208,6 @@ class App(tk.Tk):
         except:
             info_text = 'Please select a correct file'
         self.label['text'] = info_text
-        self.files, self.folders = [], []
 
     def n_lge_eta(self, filename, path):
         lge_raw = filename
@@ -248,7 +251,6 @@ class App(tk.Tk):
         except:
             info_text = 'Please select a correct file'
         self.label['text'] = info_text
-        self.files, self.folders = [], []
 
     def frt_terminal(self, filename, path):
 
@@ -271,7 +273,6 @@ class App(tk.Tk):
         df.to_excel(output_file, index=None)
         exec_time = time.time() - start_t
         self.label['text'] = 'Total: ' + f'{total_data}' + '\n' + 'Time consumed: ' + f'{min_sec(exec_time)}'
-        self.files, self.folders = [], []
 
     def ftv_error(self, filename, path):
 
@@ -300,25 +301,18 @@ class App(tk.Tk):
         self.edt_file.append(output_file)
         exec_time = time.time() - start_t
         self.label['text'] = 'Total: ' + f'{total_data}' + '\n' + 'Time consumed: ' + f'{min_sec(exec_time)}'
-        self.files, self.folders = [], []
 
     def fdest_all(self, filename1, filename2, path1):
-
         LGE_path = path1
-
         lge_raw = filename1
         nlge_raw = filename2
         start_t = time.time()
-
         del_cont = ('DFSU6749793', 'CAIU7463420', 'KOCU4443003')
         del_cont_hbl = ('PLISZ4B13324', 'PLISZ4B13326', 'PLISZ4B13328')
-
         df = pd.read_excel(f'{LGE_path}{lge_raw}', na_filter=False)
-
         df['BRANCH'] = ''
         df['IMP Operator'] = ''
         df['LOAD TYPE'] = ''
-
         df = df[df['House B/L No'].str.contains('PLI')]
         df = df[df['Container No'] != '-']
         df = df[df['FDEST Port'].str.startswith('US')]
@@ -334,9 +328,6 @@ class App(tk.Tk):
                  'BRANCH', 'IMP Operator', 'LOAD TYPE', 'Buyer']]
         # output_lge = f'{LGE_path}p_LGE_Raw_edited.xlsx'
         # df.to_excel(output_lge, index=None)
-
-        # sort rrrrrrrrrrrrrrrrr NON LGE rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-
         df2 = pd.read_excel(f'{LGE_path}{nlge_raw}', na_filter=False)
 
         df2 = df2[df2['HBL No'].str.contains('PLI')]
@@ -374,34 +365,7 @@ class App(tk.Tk):
 
         self.label['text'] = f' {all_total}' + f'\n{lge_total}, {nlge_total}' + \
                         '\nTime consumed: ' + f'{min_sec(exec_time2)}'
-        self.files, self.folders = [], []
         self.my_fold = []
-
-    def lead_time(self, filename, path):
-        LGE_path = path
-        raw_file = filename
-        edited_file = f'{filename[:-5]} - Edited_p.xlsx'
-        start_t = time.time()
-        print(filename,path)
-        df = pd.read_excel(f'{LGE_path}{raw_file}', na_filter=False)
-        fdest_ports = ('USFW7', 'USLOT', 'USMCH', 'USSBT', 'USSOJ', 'USXF7')
-        route_e = ('AWT', 'MLB')
-        df['CY1 ATD - POD ATA'] = '=Q2-M2'
-        df['F.DEST ATA - CY1 ATD'] = '=X2-Q2'
-        df['TOTAL'] = '=Z2+Y2'
-        df = df[['House B/L No', 'Invoice No', 'Container No', 'Carrier', 'Route', 'HOT Cntr', 'Diversion', 'Buyer',
-                 'Terminal', 'Current Vessel', 'POD Mode', 'POD Port', 'POD ATA', 'CY1 Port', 'CY1 ATA', 'CY1 Mode',
-                 'CY1 ATD', 'CY2 Port', 'CY2 ATA', 'CY2 Mode', 'CY2 ATD', 'FDEST Mode', 'FDEST Port', 'FDEST ATA',
-                 'CY1 ATD - POD ATA', 'F.DEST ATA - CY1 ATD', 'TOTAL']]
-        df = df[df['FDEST Port'].isin(fdest_ports)]
-        df = df[df['Route'].isin(route_e)]
-        df = df.drop_duplicates(subset=['Container No'])
-        total_data = len(df['House B/L No'])
-        df.to_excel(f'{LGE_path}{edited_file}', sheet_name='Contents', index=None)
-        self.edt_file.append(edited_file)
-        exec_time = time.time() - start_t
-        self.label['text'] = 'Total: ' + f'{total_data}' + '\n' + 'Time consumed: ' + f'{min_sec(exec_time)}'
-        self.files, self.folders = [], []
 
     def open_file(self):
         # file = askopenfile(parent=root, mode='rb', title="Choose a file", filetypes=[("Excel", "*.xlsx")])
@@ -465,8 +429,9 @@ class App(tk.Tk):
         elif len(self.files) == 1 and x == 'LGE Raw':
             info = f'File 1: {self.files[0]}' + '\nApplied Filter: ' + x
             self.label_func(info)
-            time.sleep(1)
-            self.lge_eta(self.files[0], self.folders[0])
+            inf = newlge_flt(self.files[0], self.folders[0])
+            self.label_func(inf)
+            self.files, self.folders = [], []
         elif len(self.files) == 1 and x == 'ETA_WEB_TRACK':
             self.eta_tracking(self.files[0], self.folders[0])
         elif len(self.files) == 1 and x == 'Non LGE Raw':
@@ -478,14 +443,24 @@ class App(tk.Tk):
         elif len(self.files) == 1 and x == 'FTV Error':
             self.ftv_error(self.files[0], self.folders[0])
         elif len(self.files) == 1 and x == 'LEAD TIME Raw':
-            self.lead_time(self.files[0], self.folders[0])
+            text = lead_time(self.files[0], self.folders[0])
+            self.label_func(text)
         elif len(self.files) == 1 and x == 'MERGE':
             self.bl_lge(self.folders[0])
+        elif len(self.files) == 1 and x == 'N1D_Raw':
+            text = n1d_imdl(self.files[0], self.folders[0])
+            self.label_func(text)
+        elif len(self.files) == 1 and x == 'NTX_Raw':
+            text = ntx_imdl(self.files[0], self.folders[0])
+            self.label_func(text)
         else:
             self.variable.set(self.OPTIONS[5])
             x = self.variable.get()
             self.label['text'] = f'{self.files[0]} & {self.files[1]}' + '\nApplied Filter: ' + x
             self.fdest_all(self.files[0], self.files[1], self.folders[0])
+        self.files, self.folders = [], []
+        print('edt_file: ', self.edt_file)
+        print('self.my_fold', self.my_fold)
 
     def eta_tracking(self,filename, path):
         LGE_path = path
@@ -692,16 +667,13 @@ class App(tk.Tk):
         if not os.path.exists(new_abs_path):
             os.mkdir(new_abs_path)
 
-    def open_nlge_f(self ):
-        fns_path = 'C:/Users/URAL KOZHOKMATOV/Documents/FNS/2 Non LGE Tracking'
+    def open_pier(self ):
+        fns_path = 'C:/Users/URAL KOZHOKMATOV/Documents/FNS/1 PIERPASS'
         try:
             call(["open", fns_path])
         except:
             path = os.path._getfullpathname(fns_path)
             os.system(f"explorer {path}")
-        new_abs_path = os.path.join(fns_path, f'{self.date_info}')
-        if not os.path.exists(new_abs_path):
-            os.mkdir(new_abs_path)
 
     def open_frt_f(self):
         fns_path = 'C:/Users/URAL KOZHOKMATOV/Documents/FNS/3 FRT Terminal'

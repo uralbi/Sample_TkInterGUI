@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/build/Web_GUI/localpycos" />
+      <excludeFolder url="file://$MODULE_DIR$/FNS_data" />
+      <excludeFolder url="file://$MODULE_DIR$/mailing" />
+      <excludeFolder url="file://$MODULE_DIR$/my_env" />
+      <excludeFolder url="file://$MODULE_DIR$/my_env/Include" />
+      <excludeFolder url="file://$MODULE_DIR$/my_env/Lib" />
+      <excludeFolder url="file://$MODULE_DIR$/my_env/Scripts" />
+      <excludeFolder url="file://$MODULE_DIR$/old_files" />
+      <excludeFolder url="file://$MODULE_DIR$/pics" />
+      <excludeFolder url="file://$MODULE_DIR$/TexasHoldem" />
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.9 (excel)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
