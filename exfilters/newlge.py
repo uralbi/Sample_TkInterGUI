@@ -2,6 +2,7 @@ import time
 import numpy as np
 import pandas as pd
 from msc_fncs.fncs import min_sec
+from msc_fncs.to_file_log import fns_log_file
 
 def newlge_flt(filename, path):
     lge_raw = filename
@@ -33,9 +34,11 @@ def newlge_flt(filename, path):
         info.append(f'West: {west_cnt}')
         info.append(f'East: {east_cnt}')
 
+        txt_info = f'LGE Raw Total:{total_data} West:{west_cnt} East:{east_cnt}'
+        fns_log_file(txt_info)
+
         df.to_excel(f'{LGE_path}{lge_raw[:-5]}_edited.xlsx', index=None)
 
-        # self.edt_file.append(f'{lge_raw[:-5]}_edited.xlsx')
         exec_time = time.time() - start_t
         total_t = min_sec(exec_time)
         info.append(f'Time consumed: {total_t}')

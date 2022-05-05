@@ -1,18 +1,19 @@
 import tkinter as tk
 import time
 import os
+import threading
 from subprocess import call
 import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webtrack.Vetracker import vetrack
+from msc_fncs.fncs import commaseparator
 
 window = tk.Tk()
 window.configure(background="#e6e6e6")
 window.title("FNS: Container Tracking")
-window.geometry("408x188")
+window.geometry("408x558")
 p1 = tk.PhotoImage(file ='pics/cont.png')
 window.iconphoto(False, p1)
 
@@ -21,14 +22,15 @@ label3 = tk.Label(
 label2 = tk.Label(
     text="Carrier", bg='#e6e6e6', fg='#595959', width = 10, height=1)
 
-text_t = tk.Text(window, bg='#cccccc', fg='black', width = 50, height=7,)
+text_t = tk.Text(window, bg='#cccccc', fg='black', width = 50, height=30,)
 container = tk.Entry(bd=1, bg='#d9d9d9', width='40')
 carr = tk.Entry(bd=1, width='10', bg = '#d9d9d9',)
 
 
 def text_out(info):
-    text_t.delete(1.0,'end')
-    text_t.insert('1.0', f'\n{info}')
+    # text_t.delete(1.0,'end')
+    text_t.insert('1.0', f'\n{info}\n{"-"*30}')
+
 
 def notes():
     pdf_f = 'pics/notes.txt'
@@ -38,12 +40,6 @@ def notes():
         path = os.path._getfullpathname(pdf_f)
         os.system(f"explorer {path}")
 
-init=  ' ap (CMA CGM), on (ONE),     sd (HamburgSud), ' \
-     '\n ma (Maersk),  mt (Matson),  ww (Westwood),' \
-     '\n cs (Cosco),   sm (SM Line), wn (Wanhai)' \
-     '\n hp (Hapag),   ec (ECUWorld) eg (Evergreen)'
-
-text_out(init)
 
 class Tracking:
 
@@ -54,33 +50,33 @@ class Tracking:
             cont = container.get().strip()
             carrier = carr.get().strip().lower()
             if carrier == 'sm':
-                self.sm_track(cont)
+                threading.Thread(target=self.sm_track, args=(cont,)).start()
             elif carrier == 'on':
-                self.one_track(cont)
+                threading.Thread(target=self.one_track, args=(cont,)).start()
             elif carrier == 'ap':
-                self.apl_track(cont)
+                threading.Thread(target=self.apl_track, args=(cont,)).start()
             elif carrier == 'ma':
-                self.mae_track(cont)
+                threading.Thread(target=self.mae_track, args=(cont,)).start()
             elif carrier == 'cs':
-                self.cosco_mbl_track(cont)
+                threading.Thread(target=self.cosco_mbl_track, args=(cont,)).start()
             elif carrier == 'mt':
-                self.mat_track(cont)
+                threading.Thread(target=self.mat_track, args=(cont,)).start()
             elif carrier == 'ww':
-                self.ww_track(cont)
+                threading.Thread(target=self.ww_track, args=(cont,)).start()
             elif carrier == 'sd':
-                self.sud_track(cont)
+                threading.Thread(target=self.sud_track, args=(cont,)).start()
             elif carrier == 'wn':
-                self.wan_track(cont)
+                threading.Thread(target=self.wan_track, args=(cont,)).start()
             elif carrier == 'hp':
-                self.hap_track(cont)
+                threading.Thread(target=self.hap_track, args=(cont,)).start()
             elif carrier == 'md':
-                self.med_track(cont)
+                threading.Thread(target=self.med_track, args=(cont,)).start()
             elif carrier == 'ec':
-                self.ecu_track(cont)
+                threading.Thread(target=self.ecu_track, args=(cont,)).start()
             elif carrier == 'eg':
-                self.evg_track(cont)
+                threading.Thread(target=self.evg_track, args=(cont,)).start()
             elif carrier == 'ves':
-                text_out(vetrack(cont))
+                threading.Thread(target=self.vetrack, args=(cont,)).start()
             else:
                 info = 'Please enter valid values'
                 text_out(info)
@@ -119,7 +115,7 @@ class Tracking:
                 eta = eta.replace('\n', ' ')[:14]
                 eta = eta[4:]
             except:
-                eta = 'No data'
+                eta = f'#COS: {cont} : No data'
 
             try:
                 vessel_btn = '/html/body/div[1]/div[4]/div[1]/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/ul/li[2]/div[3]/div/div[4]/div/div/div/div[1]/div/div'
@@ -146,7 +142,7 @@ class Tracking:
                         break
                     i += 1
             except:
-                eta2 = 'No data'
+                eta2 = f'#COS: {cont} No data'
                 vessel = '--'
                 eta_a = '--'
             dr.quit()
@@ -157,7 +153,7 @@ class Tracking:
                 info_text.append(f'ETA: {eta[:10]}')
             info_text.append(f'POD: {pod}')
             info_text.append(f'Vessel: {vessel}')
-            text_info = ''
+            text_info = f'#COS: {cont}\n'
             for i in info_text:
                 text_info += i +'\n'
             text_out(text_info)
@@ -211,16 +207,17 @@ class Tracking:
                 term = term.replace(f'{pod_port}', '').replace('-', '').strip()
                 info_text.append(f'Term: {term} | {firms_code}')
             except:
-                info_text = 'No data'
+                info_text = f'#COS: {cont} : No data'
             dr.quit()
-
+            print(info_text)
             if 'No data' not in info_text:
-                text_info = ''
+                text_info = f'#COS: {cont}\n'
                 for i in info_text:
+                    print(i)
                     text_info += i +'\n'
                 text_out(text_info)
             else:
-                text_out(info_text)
+                text_out(info_text.strip())
 
     @staticmethod
     def sm_track(cont):
@@ -254,9 +251,9 @@ class Tracking:
             st_inx = status.find('POD Berthing')
             status = status[:st_inx]
             loc_ = loc_.replace('UNITED STATES', '')
-            info_all = ea + ' ' + e_date[:10] + ' ' + loc_ + '\nVessel: ' + status
+            info_all = f'#SM : {cont}\n'+ ea + ' ' + e_date[:10] + ' ' + loc_ + '\nVessel: ' + status
         except:
-            info_all = 'No data. Check container No or Carrier'
+            info_all = f'#SM : {cont} \nNo data. Check container No or Carrier'
         dr.quit()
         text_out(info_all)
 
@@ -302,17 +299,22 @@ class Tracking:
             pol_vsl = pol_vsl[l_x + 1:]
             sl_x = pol_vsl.find("'")
             pol_vsl = pol_vsl[:sl_x]
-            pol_vsl = pol_vsl[:-4]
+            pol_vsl = pol_vsl[:-4].replace('\n', '')
 
             if 'Actual' in eta:
                 eta_t = 'ATA'
             else:
                 eta_t = 'ETA'
             eta = eta.replace('Estimate', '').replace('Actual', '').strip()[:10]
-            pod = pod.replace('UNITED STATES', '')
+            ind = pod.find(',')
+            term = pod[ind:].replace('UNITED STATES', '').replace('\n', '').replace(',', ' ').strip()
+            term=term[2:].strip()
+            pod = pod[:ind]
             stat_idx = status.find('POD Berthing')
             status = status[:stat_idx].replace("'", '')
-            text = eta_t + ': ' + eta + '\n' + pod + '\n' + 'Vessel : ' + status[:-5] + '\n' + 'POL Vsl: ' + pol_vsl
+            text = f'#ONE: {cont}\n'+ eta_t + ': ' + eta + ' / ' + pod + '\n' + f'Term: {term}' \
+                   '\n' + 'Vsl : ' + status[:-5] + \
+                   '/ ' + 'POL Vsl: ' + pol_vsl
         text_out(text)
 
     @staticmethod
@@ -345,9 +347,9 @@ class Tracking:
                 pod = pod[:podx]
             inx = eadate.find(',')
             eadate = eadate[inx + 2:-5]
-            text = f' {ea} : {eadate} \n {pod} : {vessel}'
+            text = f'#APL: {cont}\n{ea} : {eadate} \n{pod} : {vessel}'
         except:
-            text = 'No results found'
+            text = f'#APL{cont} : No results found'
         dr.quit()
         text_out(text)
 
@@ -399,11 +401,11 @@ class Tracking:
             v_inx = vessel.find('/')
             vessel = vessel[:v_inx].replace('Load on', '').strip()
         except:
-            info1 = 'No data, please check Container No or Carrier'
+            info1 = f'#MAE: {cont} : No data'
         if info1.find('No data') >= 0:
             info1 = info1
         else:
-            info1 = e_ata + ': ' + disc_date + '\n' + pod_loc + '\nVessel: ' + vessel
+            info1 = f'#MAE: {cont}\n' + e_ata + ': ' + disc_date + '\n' + pod_loc + '\nVessel: ' + vessel
         dr.quit()
         text_out(info1)
 
@@ -439,7 +441,7 @@ class Tracking:
             ea = 'ETA'
             eta = eta[end_ + 4:].replace(' ', '')
         dr.quit()
-        i_info = ea +': '+ eta
+        i_info = f'#MAT: {cont}\n' + ea +': '+ eta
         text_out(i_info)
 
     @staticmethod
@@ -469,9 +471,9 @@ class Tracking:
                 f'/html/body/div[2]/main/div[3]/div/div[1]/div/table/tbody/tr[{i}]/td[4]').text
             pod = dr.find_element_by_xpath(
                 f'/html/body/div[2]/main/div[3]/div/div[1]/div/table/tbody/tr[{i}]/td[2]').text
-            event = event.replace('Estimated arrival at POD', '\n ETA')
+            event = event.replace('Estimated arrival at POD', 'ETA')
             event = event.replace('Arrived at POD', '\n ATA')
-            info1 = f'{event}: {date} | {pod}'
+            info1 = f'#HPL: {cont} \n{event}: {date} | {pod}'
         except:
             info1 = 'No data'
         dr.quit()
@@ -523,7 +525,7 @@ class Tracking:
                         f'/html/body/main/div/div/form/div[3]/div/div/div[5]/div[1]/div/table/tbody/tr[1]/td[3]').text
                     info_text.append(info_1)
         except:
-            info_text.append('No data, please check Container No or Carrier')
+            info_text.append(f'#HPL: {cont} : No data')
         dr.quit()
         i_info =''
         for i in info_text:
@@ -544,7 +546,7 @@ class Tracking:
             WebDriverWait(dr2, 5).until(EC.presence_of_element_located((By.XPATH, more_d)))
         except:
             dr2.quit()
-            info = 'No data'
+            info = f'#WAN: {cont} : No data'
             text_out(info)
             return
         dr2.find_element_by_xpath(more_d).click()
@@ -568,7 +570,7 @@ class Tracking:
             arrival_date = datetime.date(c_year,c_month,c_day)
 
         if len(ar_eta) > 4 and arrival_date > tod_:
-            info = f' {pod}: {ar_eta} \n Vessel: {vessel}'
+            info = f'#WAN:{cont} \n{pod}: {ar_eta} \nVessel: {vessel}'
             text_out(info)
             dr2.quit()
             return
@@ -584,7 +586,7 @@ class Tracking:
                 eta = dr2.find_element_by_xpath(eta_p).text
                 etb = dr2.find_element_by_xpath(etb_path).text
             except:
-                info = f' {pod}: {ar_eta} \n Vessel: {vessel}'
+                info = f'#WAN: {cont}\n{pod}: {ar_eta} \nVessel: {vessel}'
                 text_out(info)
                 dr2.quit()
                 return
@@ -592,8 +594,7 @@ class Tracking:
                 eta = f'ETB {etb}'
             else:
                 eta = f'ETA {eta}'
-            # 2021/10/03
-            info = f' {pod}: {eta} \n Vessel: {vessel}'
+            info = f'#WAN: {cont}\n{pod}: {eta} \nVessel: {vessel}'
             dr2.quit()
             text_out(info)
 
@@ -673,7 +674,7 @@ class Tracking:
                 elif i == 5:
                     break
             except:
-                descr = 'No data'
+                descr = f'#MED: {cont} : No data'
                 dr.quit()
                 break
             i += 1
@@ -682,7 +683,7 @@ class Tracking:
             eta_d = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[3]').text
             vessel = dr.find_element_by_xpath(f'{row_tb}/tr[{i}]/td[4]').text
             ea = 'ETA' if 'Estimated' in descr else 'ATA'
-            info = f'{pod} {ea} {eta_d} \nVessel: {vessel}'
+            info = f'#MED: {cont}\n{pod} {ea} {eta_d} \nVessel: {vessel}'
         else:
             info = descr
         dr.quit()
@@ -706,7 +707,7 @@ class Tracking:
             WebDriverWait(dr, 5).until(EC.presence_of_element_located((By.XPATH, last_evnt)))
             last_event = dr.find_element_by_xpath(last_evnt).text
         except:
-            text_out('No data')
+            text_out(f'#ECU:{cont} : No data')
             dr.quit()
             return
 
@@ -718,7 +719,7 @@ class Tracking:
                 break
             i += 1
         pol_vs = pol_vs.replace('\n', ': ')
-        info = last_event +'\n'+ pol_vs
+        info = f'#ECU:{cont}\n'+last_event +'\n'+ pol_vs
         dr.quit()
         text_out(info)
 
@@ -753,10 +754,10 @@ class Tracking:
                 date_path = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[2]/tbody/tr/td'
                 date = dr.find_element_by_xpath(date_path).text
                 date = date.replace('\n', '').replace('Estimated Date of Arrival :', '')
-                info = f'ETA: {date}\nVESSEL: {vessel}'
+                info = f'#EVG: {cont}\nETA: {date}\nVESSEL: {vessel}'
                 dr.quit()
             except:
-                info = 'No Data'
+                info = f'#EVG: {cont} : No Data'
                 dr.quit()
         else:
             try:
@@ -769,12 +770,46 @@ class Tracking:
                 vess = t_info[inx1+1:-inx2].strip()
                 eta, pod = info1[0], info1[1].replace(',', '')
                 dr.quit()
-                info = f'{pod} ETA: {eta} \nVessel: {vess}'
+                info = f'#EVG: {cont}\n{pod} ETA: {eta} \nVessel: {vess}'
             except:
                 cont_link = '/html/body/div[5]/center/table[2]/tbody/tr/td/table[3]/tbody/tr[3]/td[1]/a'
                 dr.find_element_by_xpath(cont_link).click()
                 dr.switch_to.window(dr.window_handles[1])
         text_out(info)
+
+    @staticmethod
+    def vetrack(cont):
+        vessel = cont
+        dr = webdriver.Chrome()
+        webs = f'https://www.vesselfinder.com/vessels?name={vessel}&type=403'
+        dr.get(webs)
+        table = '/html/body/div/div/main/div/section/table/tbody'
+        try:
+            WebDriverWait(dr, 3).until(EC.presence_of_element_located((By.XPATH, table)))
+        except:
+            info_all = 'Not found'
+            dr.quit()
+            return info_all
+        link1 = '/html/body/div/div/main/div/section/table/tbody/tr/td[2]/a'
+        dr.find_element_by_xpath(link1).click()
+        info_path = '/html/body/div[1]/div/main/div/section[1]/div/div[2]/div'
+        info_path2 = '/html/body/div[1]/div/main/div/section[2]/div/div[2]/div[1]'
+        info = dr.find_element_by_xpath(info_path).text
+        time.sleep(0.5)
+        info2 = dr.find_element_by_xpath(info_path2).text
+        info = info.split('\n')
+        info2 = info2.split('\n')
+        dr.quit()
+        pod1 = commaseparator(info[0])
+        pod2 = commaseparator(info2[0])
+        eta1 = commaseparator(info[1])
+        pol = commaseparator(info[12])
+        atd = commaseparator(info[13])
+        ata2 = commaseparator(info2[2])
+        nav = info[6].replace('Navigation ', '').replace('Status', 'Status:')
+        info_all = f'Vessel : {vessel} \n-> {pod1} | {eta1} | {nav}\n<- {pol} | {atd} | Ata: {ata2}'
+        text_out(info_all)
+
 
 button = tk.Button(
     text='Search', height=1, width=22, bg='#cccccc', fg='black', command=Tracking)

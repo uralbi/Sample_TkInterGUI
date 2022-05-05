@@ -1,0 +1,96 @@
+04/04/22 09:16 | KPI Total: 9297 Y:7868 / 85.0% || N:1429 / 15.0% || NO FDEST DATE: 87 / 1.0%
+04/04/22 09:18 | LGE Raw Total:10015 West:4386 East:5629
+04/04/22 16:20 | FRT Raw Total:2732
+04/04/22 17:06 | FTV Error Total:26
+04/04/22 18:37 | FDEST Raw Total:Total :546
+04/05/22 08:14 | LGE Raw Total:8925 West:3734 East:5191
+04/05/22 14:54 | FTV Total 25224 Ftv: 25160 Seastock: 64
+04/05/22 16:00 | FRT Raw Total:2504
+04/05/22 18:56 | FDEST Raw Total:Total :460
+04/05/22 20:31 | FTV Error Total:5
+04/05/22 20:43 | FTV Total 25044 Ftv: 24986 Seastock: 58
+04/06/22 01:00 | FTV Total 25052 Ftv: 24986 Seastock: 66
+04/06/22 14:14 | LGE Raw Total:8752 West:3851 East:4901
+04/06/22 16:00 | FRT Raw Total:2440
+04/06/22 17:00 | FTV Error Total:43
+04/06/22 17:09 | FTV Total 25344 Ftv: 25294 Seastock: 50
+04/06/22 17:36 | FDEST Raw Total:Total :344
+04/07/22 08:32 | LGE Raw Total:8516 West:3811 East:4705
+04/07/22 17:14 | FRT Raw Total:1970
+04/07/22 17:41 | FTV Error Total:59
+04/07/22 18:55 | FTV Total 25277 Ftv: 25236 Seastock: 41
+04/07/22 19:20 | FDEST Raw Total:Total :464
+04/08/22 15:29 | FRT Raw Total:1674
+04/08/22 16:30 | FTV Error Total:152
+04/08/22 17:10 | FTV Total 25145 Ftv: 25106 Seastock: 39
+04/08/22 17:32 | FDEST Raw Total:Total :456
+04/11/22 17:24 | FRT Raw Total:2011
+04/11/22 18:35 | FTV Error Total:183
+04/11/22 18:42 | FTV Total 25435 Ftv: 25393 Seastock: 42
+04/11/22 19:03 | FDEST Raw Total:Total :1262
+04/11/22 22:24 | LGE Raw Total:9344 West:4535 East:4809
+04/12/22 08:21 | LGE Raw Total:8846 West:4172 East:4674
+04/12/22 17:34 | FRT Raw Total:1578
+04/12/22 18:06 | FTV Error Total:35
+04/12/22 18:24 | FTV Total 25670 Ftv: 25631 Seastock: 39
+04/12/22 18:52 | FDEST Raw Total:Total :1375
+04/13/22 18:16 | FRT Raw Total:2133
+04/13/22 18:31 | FTV Error Total:11
+04/13/22 18:46 | FTV Total 26051 Ftv: 26013 Seastock: 38
+04/13/22 19:07 | FDEST Raw Total:Total :563
+04/14/22 08:52 | LGE Raw Total:9416 West:4519 East:4897
+04/14/22 21:47 | FRT Raw Total:1699
+04/14/22 23:04 | FTV Total 26344 Ftv: 26308 Seastock: 36
+04/14/22 23:12 | FDEST Raw Total:Total :670
+04/18/22 10:02 | LGE Raw Total:10165 West:5093 East:5072
+04/18/22 18:16 | FRT Raw Total:2169
+04/18/22 19:51 | FTV Error Total:14
+04/18/22 20:01 | FTV Total 23686 Ftv: 18290 Seastock: 5396
+04/18/22 20:15 | FTV Total 26718 Ftv: 26682 Seastock: 36
+04/18/22 21:13 | FDEST Raw Total:Total :947
+04/19/22 08:32 | LGE Raw Total:9652 West:4894 East:4758
+04/19/22 18:01 | FRT Raw Total:1078
+04/19/22 18:04 | FRT Raw Total:1078
+04/19/22 19:00 | FTV Error Total:92
+04/19/22 19:02 | FTV Total 26671 Ftv: 26636 Seastock: 35
+04/19/22 19:32 | FDEST Raw Total:Total :557
+04/20/22 08:19 | LGE Raw Total:9297 West:4598 East:4699
+04/20/22 16:12 | FRT Raw Total:1060
+04/20/22 18:24 | FTV Total 26142 Ftv: 26106 Seastock: 36
+04/20/22 20:06 | FDEST Raw Total:Total :571
+04/21/22 08:21 | LGE Raw Total:8902 West:4120 East:4782
+04/21/22 17:06 | FRT Raw Total:1214
+04/21/22 21:22 | FTV Total 26002 Ftv: 25972 Seastock: 30
+04/21/22 21:46 | FDEST Raw Total:Total :513
+04/22/22 08:06 | LGE Raw Total:8732 West:3914 East:4818
+04/22/22 16:31 | FRT Raw Total:1071
+04/22/22 20:03 | FTV Total 25720 Ftv: 25691 Seastock: 29
+04/22/22 20:29 | FDEST Raw Total:Total :399
+04/25/22 08:22 | LGE Raw Total:9299 West:3836 East:5463
+04/25/22 19:16 | FRT Raw Total:2118
+04/25/22 19:28 | FDEST Raw Total:Total :476
+04/25/22 22:05 | FTV Total 25604 Ftv: 25593 Seastock: 11
+04/26/22 17:45 | FDEST Raw Total:Total :317
+04/26/22 17:48 | FRT Raw Total:1495
+04/26/22 20:21 | FTV Total 25539 Ftv: 25529 Seastock: 10
+04/27/22 08:32 | LGE Raw Total:8908 West:3948 East:4960
+04/27/22 17:40 | FRT Raw Total:1771
+04/27/22 19:14 | FDEST Raw Total:Total :536
+04/27/22 21:04 | FTV Total 25762 Ftv: 25754 Seastock: 8
+04/28/22 08:16 | LGE Raw Total:8881 West:3829 East:5052
+04/28/22 13:23 | FRT Raw Total:1548
+04/28/22 16:48 | FDEST Raw Total:Total :384
+04/28/22 17:27 | KPI Total: 8563 Y:5598 / 65.0% || N:2965 / 35.0% || NO FDEST DATE: 1104 / 13.0%
+04/28/22 19:20 | FTV Total 25705 Ftv: 25670 Seastock: 35
+04/29/22 14:04 | FRT Raw Total:1799
+04/29/22 17:22 | FDEST Raw Total:Total :457
+04/29/22 18:04 | FTV Total 25700 Ftv: 25658 Seastock: 42
+05/02/22 08:14 | LGE Raw Total:9213 West:3994 East:5219
+05/02/22 19:05 | FDEST Raw Total:Total :521
+05/03/22 08:29 | LGE Raw Total:8950 West:3779 East:5171
+05/03/22 17:13 | FRT Raw Total:1729
+05/03/22 18:29 | FTV Total 24615 Ftv: 24562 Seastock: 53
+05/03/22 18:43 | FDEST Raw Total:Total :440
+05/04/22 08:29 | LGE Raw Total:8796 West:3606 East:5190
+05/04/22 15:46 | KPI Total: 8055 Y:6104 / 76.0% || N:1951 / 24.0% || NO FDEST DATE: 13 / 0.0%
+05/04/22 16:05 | FRT Raw Total:618

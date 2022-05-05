@@ -1,21 +1,37 @@
 NOTES:
 
-add : yuna.jung@fnsusa.com
+__________________________________________________________
+BMOU6065994	PLIHQ4D25714
+TGHU6058413	PLIHQ4D25704
 
-N1A
-NF2
-N1D
-N1F
-NTX
+__________________________________________________________
+check: add ETA Tracking: westwood
+check: check ETA Trakcing: med shipping
 
+________________________________________________________________
+퇴사:
+박은정 	 	eunjeong.park@fnsusa.com
+Joshua Im 	joshua.im@fnsusa.com
+서재헌 	 	jason.seo@fnsusa.com
+서호정 	 	hojeong.seo@fnsusa.com
+조윤주 	 	yoonjoo.cho@fnsusa.com
+________________________________________________________________
 
+pvs02Fnslax
+!P@ntos21
+________________________________________________________________
 
+PIERPASS EMAIL에 JIHYE.HYUN@FNSUSA.COM CC 항상 부탁드립니다.
 
-PLISH4C60889 SMLMSHSR1D532700 CAIU6669335
-System에 SM NINGBO로 되어 있는데 실제로 Vessel은 SM BUSAN이고 POD ATA: 2021-12-09로 나왔습니다.
-오늘 POD ETA/ATA를 수정했습니다.
+BBY팀 슬립생성완료하였습니다. 또한 PIERPASS 메일에 저가 없는 것 같아 추가부탁드립니다.
+김승환(seunghwan.kim@fnsusa.com)
 
+____________________________________________________________
 
+김준호 68201 	junho.kim@fnsusa.com
+박진우 69920     jinwoo.park@fnsusa.com
+김소정 69926     sojeong.kim@fnsusa.com
+____________________________________________________________
 'E364': 'NEW YORK GCT BAYONNE TERMINAL',
 'Z952': 'Long Beach Total Terminals International',
 'WAC8': 'Long Beach Container Terminal (Pier E)',

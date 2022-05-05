@@ -330,8 +330,8 @@ class App(tk.Tk):
         lge_raw = filename1
         nlge_raw = filename2
         start_t = time.time()
-        del_cont = ('TCNU1347704',)
-        del_cont_hbl = ('PLISZ4B15160',)
+        del_cont = ('DFSU6749793', 'CAIU7463420', 'KOCU4443003')
+        del_cont_hbl = ('PLISZ4B13324', 'PLISZ4B13326', 'PLISZ4B13328')
         df = pd.read_excel(f'{LGE_path}{lge_raw}', na_filter=False)
         df['BRANCH'] = ''
         df['IMP Operator'] = ''
@@ -398,8 +398,7 @@ class App(tk.Tk):
         exec_time2 = time.time() - start_t
 
         info = f' {all_total}' + f'\n{lge_total}, {nlge_total}' + \
-                        '\nTime consumed: ' + f'{min_sec(exec_time2)}' \
-                                              f'\n {del_conts}'
+                        '\nTime consumed: ' + f'{min_sec(exec_time2)}'
         print(f' {all_total}' + f' {lge_total}, {nlge_total}' + \
                         '// Time consumed: ' + f'{min_sec(exec_time2)}')
         return info
@@ -704,7 +703,7 @@ class App(tk.Tk):
             path = os.path._getfullpathname(fns_path)
             os.system(f"explorer {path}")
 
-        new_abs_path = os.path.join(fns_path, f'{self.date_info} ETA')
+        new_abs_path = os.path.join(fns_path, f'{self.date_info}')
         if not os.path.exists(new_abs_path):
             os.mkdir(new_abs_path)
 
@@ -723,7 +722,7 @@ class App(tk.Tk):
         except:
             path = os.path._getfullpathname(fns_path)
             os.system(f"explorer {path}")
-        new_abs_path = os.path.join(fns_path, f'{self.date_info} FRT')
+        new_abs_path = os.path.join(fns_path, f'{self.date_info}')
         if not os.path.exists(new_abs_path):
             os.mkdir(new_abs_path)
 
@@ -742,7 +741,7 @@ class App(tk.Tk):
         except:
             path = os.path._getfullpathname(fns_path)
             os.system(f"explorer {path}")
-        new_abs_path = os.path.join(fns_path, f'{self.date_info} FDL')
+        new_abs_path = os.path.join(fns_path, f'{self.date_info}')
         if not os.path.exists(new_abs_path):
             os.mkdir(new_abs_path)
 
@@ -761,7 +760,7 @@ class App(tk.Tk):
         except:
             path = os.path._getfullpathname(fns_path)
             os.system(f"explorer {path}")
-        new_abs_path = os.path.join(fns_path, f'{self.date_info} BLM')
+        new_abs_path = os.path.join(fns_path, f'{self.date_info}')
         if not os.path.exists(new_abs_path):
             os.mkdir(new_abs_path)
 
@@ -939,9 +938,8 @@ class App(tk.Tk):
         df3 = df3[['House B/L No', 'Container No', 'Master B/L No', 'FDEST ETA', 'FDEST ATA']]
         df3 = df3[df3['House B/L No'].str.startswith('PLI')]
         df3 = df3[df3['FDEST ATA'] == '']
-        ata_errs = len(df3.index)
 
-        self.text_info = f'FTV total {total_data} \nSeastock: {seas_cnts} // Err: {errs} //AtaErr: {ata_errs}'
+        self.text_info = f'FTV total {total_data} \nSeastock: {seas_cnts} // Err: {errs}'
         threading.Thread(target=self.label_func, args=(self.text_info,)).start()
 
         output_file = f'{folder1}FTV Original {current_date()[0]} Edited_p.xlsx'

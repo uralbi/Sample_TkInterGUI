@@ -84,3 +84,6 @@ def current_date():
 
     return str_date, curr_date
 
+def commaseparator(text):
+    inx = text.find(',')
+    return text[:inx]
